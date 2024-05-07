@@ -1,0 +1,99 @@
+import React, { useState } from "react";
+
+function MyComponent() {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  // Calculate maximum and minimum years
+  const maxYear = currentYear + 1;
+  const minYear = currentYear - 6;
+
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(currentMonth);
+  const [currentYearState, setCurrentYearState] = useState(currentYear);
+  const [currentDay, setCurrentDay] = useState(currentDate.getDate());
+
+  const incrementMonth = () => {
+    let nextMonthIndex = currentMonthIndex + 1;
+    let nextYear = currentYearState;
+
+    // If next month is December, move to next year
+    if (nextMonthIndex === 12) {
+      nextMonthIndex = 0;
+      nextYear++;
+    }
+
+    // If next year is within the limit, update state
+    if (nextYear <= maxYear) {
+      setCurrentMonthIndex(nextMonthIndex);
+      setCurrentYearState(nextYear);
+      setCurrentDay(1);
+    }
+  };
+
+  const decrementMonth = () => {
+    let prevMonthIndex = currentMonthIndex - 1;
+    let prevYear = currentYearState;
+
+    // If previous month is January, move to previous year
+    if (prevMonthIndex === -1) {
+      prevMonthIndex = 11;
+      prevYear--;
+    }
+
+    // If previous year is within the limit, update state
+    if (prevYear >= minYear) {
+      setCurrentMonthIndex(prevMonthIndex);
+      setCurrentYearState(prevYear);
+      setCurrentDay(1);
+    }
+  };
+
+  const daysInMonth = (month, year) => {
+    if (month === 1) { // February
+      return (year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0)) ? 29 : 28;
+    } else {
+      return new Date(year, month + 1, 0).getDate();
+    }
+  };
+
+  const currentMonthName = new Date(currentYearState, currentMonthIndex).toLocaleString(
+    "default",
+    {
+      month: "long",
+    }
+  );
+  const numberOfDays = daysInMonth(currentMonthIndex, currentYearState);
+
+  // Generate options for month select
+  const monthOptions = Array.from({ length: 12 }, (_, i) => {
+    const month = new Date(currentYearState, i);
+    return <option key={i} value={i}>{month.toLocaleString('default', { month: 'long' })}</option>;
+  });
+
+  // Generate options for year select
+  const yearOptions = Array.from({ length: maxYear - minYear + 1 }, (_, i) => {
+    const year = minYear + i;
+    return <option key={year} value={year}>{year}</option>;
+  });
+
+  return (
+    <div>
+      <label htmlFor="monthSelect">Select Month:</label>
+      <select id="monthSelect" value={currentMonthIndex} onChange={(e) => setCurrentMonthIndex(parseInt(e.target.value))}>
+        {monthOptions}
+      </select>
+      <label htmlFor="yearSelect">Select Year:</label>
+      <select id="yearSelect" value={currentYearState} onChange={(e) => setCurrentYearState(parseInt(e.target.value))}>
+        {yearOptions}
+      </select>
+      <button onClick={decrementMonth}>Previous Month</button>
+      <button onClick={incrementMonth}>Next Month</button>
+      <p>Current Month: {currentMonthName}</p>
+      <p>Number of Days: {numberOfDays}</p>
+      <p>Year: {currentYearState}</p>
+    </div>
+  );
+}
+
+export default MyComponent;

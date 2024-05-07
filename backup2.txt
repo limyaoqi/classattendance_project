@@ -1,0 +1,161 @@
+ <>
+            <Grid md={6} xs={12} padding={"10px"}>
+              <Box
+                border="1px solid black"
+                sx={{
+                  padding: { xs: "10px 20px", md: "20px 40px" },
+                  borderRadius: "10px",
+                  overflow: "auto",
+                  height: { xs: "35vh", md: "75vh" },
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  fontWeight={"bold"}
+                  sx={{
+                    margin: { xs: "5px 0 10px 0", md: "5px 0 20px 0" },
+                  }}
+                >
+                  Class List:
+                </Typography>
+                {classList.map((classItem) => (
+                  <>
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      textAlign="center"
+                      padding="0 10px"
+                    >
+                      <Typography
+                        variant="h6"
+                        key={classItem.id}
+                        margin={"10px 0"}
+                      >
+                        {classItem.name}
+                      </Typography>
+                      <Box>
+                        <IconButton
+                          component={Link}
+                          to={`/classmanage/${classItem.id}`}
+                          sx={{
+                            "&:hover": {
+                              color: "blue",
+                            },
+                          }}
+                        >
+                          <Group />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleEditClass(classItem.id)}
+                          sx={{
+                            "&:hover": {
+                              color: "blue",
+                            },
+                          }}
+                        >
+                          <Edit />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDeleteClass(classItem.id)}
+                          sx={{
+                            "&:hover": {
+                              color: "red",
+                            },
+                          }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    <hr />
+                  </>
+                ))}
+              </Box>
+            </Grid>
+            <Grid md={6} xs={12} padding={"10px"}>
+              <Box
+                border="1px solid black"
+                sx={{
+                  padding: { xs: "10px 20px", md: "20px 40px" },
+                  borderRadius: "10px",
+                  height: { md: "75vh" },
+                }}
+              >
+                {editStudentFormOpen && addStudentFormOpen ? (
+                  <>
+                    <Typography
+                      variant="h5"
+                      fontWeight={"bold"}
+                      sx={{
+                        margin: { xs: "5px 0 10px 0", md: "5px 0 20px 0" },
+                      }}
+                    >
+                      Edit The Class:
+                    </Typography>
+                    <Box margin="10px 0">
+                      <Typography variant="h6">Old Class Name:</Typography>
+                      <Input
+                        fullWidth
+                        type="text"
+                        value={className}
+                        disabled
+                        style={{ marginLeft: "10px" }}
+                      />
+                    </Box>
+                    <Box margin="10px 0">
+                      <Typography variant="h6">New Class Name:</Typography>
+                      <Input
+                        fullWidth
+                        type="text"
+                        value={newClassName}
+                        onChange={(e) => setNewClassName(e.target.value)}
+                        style={{ marginLeft: "10px" }}
+                      />
+                    </Box>
+                    <Box>
+                      <Button
+                        sx={{
+                          backgroundColor: "blue",
+                          color: "white",
+                          borderRadius: "10px",
+                          transition:
+                            "background-color 0.3s ease, color 0.3s ease",
+                          "&:hover": {
+                            backgroundColor: "white",
+                            color: "blue",
+                          },
+                        }}
+                        onClick={handleEdit}
+                      >
+                        Edit
+                      </Button>
+                    </Box>
+                  </>
+                ) : (
+                  <Box>
+                    <Typography
+                      variant="h5"
+                      fontWeight={"bold"}
+                      sx={{
+                        margin: { xs: "5px 0 10px 0", md: "5px 0 20px 0" },
+                      }}
+                    >
+                      Add New Class:
+                    </Typography>
+                    <Box display="flex" margin={"10px 0"}>
+                      <Input
+                        fullWidth
+                        type="text"
+                        value={className}
+                        onChange={(e) => setClassName(e.target.value)}
+                      />
+                      <IconButton onClick={handleAddClass}>
+                        <Add />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            </Grid>
+          </>

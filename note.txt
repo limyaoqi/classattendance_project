@@ -1,0 +1,1 @@
+edit button will close the add form in  class manage
